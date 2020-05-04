@@ -19,32 +19,23 @@ class TravelLocationViewController: UIViewController {
     
     func configureMap() {
         mapView.delegate = self
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(mapTapped))
+        let tapGesture = UILongPressGestureRecognizer(target: self, action: #selector(mapLongPressed))
         mapView.addGestureRecognizer(tapGesture)
     }
     
-    @objc func mapTapped(sender: UIGestureRecognizer) {
+    @objc func mapLongPressed(sender: UIGestureRecognizer) {
         print("map tapped, \(sender.state)")
         
-        if sender.state == .recognized {
-            print("state recognized")
+        if sender.state == .began {
             let locationInView = sender.location(in: mapView)
             let locationOnMap = mapView.convert(locationInView, toCoordinateFrom: mapView)
-            addAnnotation(location: locationOnMap)
-        } else if sender.state == .began {
-            print("state recognized")
-        } else if sender.state == .changed {
-           print("state changed")
-       }
+            
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = locationOnMap
+            self.mapView.addAnnotation(annotation)
+        }
     }
-    
-    func addAnnotation(location: CLLocationCoordinate2D){
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = location
-        annotation.title = "Some Title"
-        annotation.subtitle = "Some Subtitle"
-        self.mapView.addAnnotation(annotation)
-    }
+
 }
 
 extension TravelLocationViewController: MKMapViewDelegate {
