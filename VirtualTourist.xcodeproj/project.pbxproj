@@ -13,6 +13,7 @@
 		E7C42C23245FBAF100B462E1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7C42C22245FBAF100B462E1 /* Assets.xcassets */; };
 		E7C42C26245FBAF100B462E1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7C42C24245FBAF100B462E1 /* LaunchScreen.storyboard */; };
 		E7C42C2F245FBFF000B462E1 /* TravelLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C42C2E245FBFF000B462E1 /* TravelLocationViewController.swift */; };
+		E7C42C31245FD69700B462E1 /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C42C30245FD69700B462E1 /* PhotoAlbumViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		E7C42C25245FBAF100B462E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E7C42C27245FBAF100B462E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E7C42C2E245FBFF000B462E1 /* TravelLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelLocationViewController.swift; sourceTree = "<group>"; };
+		E7C42C30245FD69700B462E1 /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				E7C42C2E245FBFF000B462E1 /* TravelLocationViewController.swift */,
+				E7C42C30245FD69700B462E1 /* PhotoAlbumViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -149,6 +152,7 @@
 				E7C42C1A245FBAEE00B462E1 /* AppDelegate.swift in Sources */,
 				E7C42C1C245FBAEE00B462E1 /* SceneDelegate.swift in Sources */,
 				E7C42C2F245FBFF000B462E1 /* TravelLocationViewController.swift in Sources */,
+				E7C42C31245FD69700B462E1 /* PhotoAlbumViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

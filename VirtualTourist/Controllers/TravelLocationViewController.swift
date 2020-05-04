@@ -10,11 +10,24 @@ import UIKit
 import MapKit
 
 class TravelLocationViewController: UIViewController {
+    static let photoAlbumSegue = "photoAlbum"
+    static let reusePinIdentifier = "albumPin"
+    
     @IBOutlet weak var mapView: MKMapView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureMap()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController!.setNavigationBarHidden(true, animated: false)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController!.setNavigationBarHidden(false, animated: false)
     }
     
     func configureMap() {
@@ -35,9 +48,14 @@ class TravelLocationViewController: UIViewController {
             self.mapView.addAnnotation(annotation)
         }
     }
-
 }
 
 extension TravelLocationViewController: MKMapViewDelegate {
-    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        let photoAlbumController = self.storyboard?.instantiateViewController(withIdentifier: "PhotoAlbumViewController") as! PhotoAlbumViewController
+                
+        photoAlbumController.annotation = view.annotation
+        navigationController!.pushViewController(photoAlbumController, animated: true)
+        //        photoAlbumController.modalPresentationStyle = .fullScreen
+    }
 }
