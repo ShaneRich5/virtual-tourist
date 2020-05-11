@@ -40,8 +40,6 @@ class TravelLocationViewController: UIViewController {
     }
     
     @objc func mapLongPressed(sender: UIGestureRecognizer) {
-        print("map tapped, \(sender.state)")
-        
         if sender.state == .began {
             let locationInView = sender.location(in: mapView)
             let locationOnMap = mapView.convert(locationInView, toCoordinateFrom: mapView)
@@ -59,6 +57,5 @@ extension TravelLocationViewController: MKMapViewDelegate {
                 
         photoAlbumController.annotation = view.annotation
         navigationController!.pushViewController(photoAlbumController, animated: true)
-        //        photoAlbumController.modalPresentationStyle = .fullScreen
     }
 }
