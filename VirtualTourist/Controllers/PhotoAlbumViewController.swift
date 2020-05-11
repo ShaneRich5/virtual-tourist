@@ -17,4 +17,23 @@ class PhotoAlbumViewController: UIViewController {
     @IBOutlet weak var newCollectionButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        showLoadingState(true)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        showLoadingState(false)
+    }
+    
+    func showLoadingState(_ isLoading: Bool) {
+        if isLoading {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
+        }
+        
+        newCollectionButton.isEnabled = !isLoading
+    }
 }
