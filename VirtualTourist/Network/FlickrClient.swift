@@ -16,7 +16,7 @@ class FlickrClient {
         let path = "/services/rest"
         
         func buildUrl() -> URL {
-            var url = "\(scheme)://\(host)\(path)"
+            let url = "\(scheme)://\(host)\(path)"
             return URL(string: url)!
         }
     }
