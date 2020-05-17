@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -44,13 +45,69 @@
                     <view key="view" contentMode="scaleToFill" id="v0s-gP-HtO">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Xad-1I-X3B">
+                                <rect key="frame" x="0.0" y="44" width="414" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="lrp-Dy-xnc"/>
+                                </constraints>
+                            </mapView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="7wg-uy-G5y">
+                                <rect key="frame" x="0.0" y="244" width="414" height="588"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Wtd-X6-83t">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="jAw-j8-8aJ">
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="N04-AT-oY2">
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EVh-R2-8HM" userLabel="New Collection">
+                                <rect key="frame" x="0.0" y="832" width="414" height="30"/>
+                                <state key="normal" title="New Collection"/>
+                            </button>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="T59-lM-A8a">
+                                <rect key="frame" x="197" y="528" width="20" height="20"/>
+                            </activityIndicatorView>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="T59-lM-A8a" firstAttribute="centerY" secondItem="7wg-uy-G5y" secondAttribute="centerY" id="06M-KI-2Yo"/>
+                            <constraint firstItem="EVh-R2-8HM" firstAttribute="leading" secondItem="fUM-At-Qos" secondAttribute="leading" id="5Dj-Wh-RSb"/>
+                            <constraint firstItem="fUM-At-Qos" firstAttribute="trailing" secondItem="EVh-R2-8HM" secondAttribute="trailing" id="7dk-58-7Kq"/>
+                            <constraint firstItem="fUM-At-Qos" firstAttribute="bottom" secondItem="EVh-R2-8HM" secondAttribute="bottom" id="8SS-82-KGx"/>
+                            <constraint firstItem="7wg-uy-G5y" firstAttribute="top" secondItem="Xad-1I-X3B" secondAttribute="bottom" id="93m-g9-Z79"/>
+                            <constraint firstItem="7wg-uy-G5y" firstAttribute="leading" secondItem="fUM-At-Qos" secondAttribute="leading" id="CMR-Yo-vvu"/>
+                            <constraint firstItem="fUM-At-Qos" firstAttribute="trailing" secondItem="7wg-uy-G5y" secondAttribute="trailing" id="HI3-d7-bCk"/>
+                            <constraint firstItem="Xad-1I-X3B" firstAttribute="top" secondItem="fUM-At-Qos" secondAttribute="top" id="Jlf-PJ-AJh"/>
+                            <constraint firstItem="EVh-R2-8HM" firstAttribute="leading" secondItem="fUM-At-Qos" secondAttribute="leading" id="MXT-5j-yfF"/>
+                            <constraint firstItem="T59-lM-A8a" firstAttribute="centerX" secondItem="7wg-uy-G5y" secondAttribute="centerX" id="Rmq-ML-cpY"/>
+                            <constraint firstItem="fUM-At-Qos" firstAttribute="trailing" secondItem="Xad-1I-X3B" secondAttribute="trailing" id="fd3-Cp-87H"/>
+                            <constraint firstItem="7wg-uy-G5y" firstAttribute="bottom" secondItem="EVh-R2-8HM" secondAttribute="top" id="rcp-MZ-ci1"/>
+                            <constraint firstItem="Xad-1I-X3B" firstAttribute="leading" secondItem="fUM-At-Qos" secondAttribute="leading" id="wsM-vs-xc1"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="fUM-At-Qos"/>
                     </view>
+                    <connections>
+                        <outlet property="activityIndicator" destination="T59-lM-A8a" id="IXg-AZ-xop"/>
+                        <outlet property="collectionView" destination="7wg-uy-G5y" id="Pn0-pa-Wmy"/>
+                        <outlet property="mapView" destination="Xad-1I-X3B" id="zlL-jB-ZiL"/>
+                        <outlet property="newCollectionButton" destination="EVh-R2-8HM" id="77K-Dt-cey"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dqV-xg-uxu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2068.1159420289855" y="129.91071428571428"/>
+            <point key="canvasLocation" x="2066.666666666667" y="129.91071428571428"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="oPC-QG-Yny">
