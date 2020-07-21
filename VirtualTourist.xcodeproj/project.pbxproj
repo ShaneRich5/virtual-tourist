@@ -14,6 +14,9 @@
 		E7C42C26245FBAF100B462E1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7C42C24245FBAF100B462E1 /* LaunchScreen.storyboard */; };
 		E7C42C2F245FBFF000B462E1 /* TravelLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C42C2E245FBFF000B462E1 /* TravelLocationViewController.swift */; };
 		E7C42C31245FD69700B462E1 /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C42C30245FD69700B462E1 /* PhotoAlbumViewController.swift */; };
+		E7E0FD9524B2E0090016D81F /* FlickrResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E0FD9424B2E0090016D81F /* FlickrResponse.swift */; };
+		E7E8DAF624B44F7F007D2DD9 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E8DAF524B44F7F007D2DD9 /* PhotoCollectionViewCell.swift */; };
+		E7F498452470D87300254040 /* FlickrClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F498442470D87300254040 /* FlickrClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +29,9 @@
 		E7C42C27245FBAF100B462E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E7C42C2E245FBFF000B462E1 /* TravelLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelLocationViewController.swift; sourceTree = "<group>"; };
 		E7C42C30245FD69700B462E1 /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
+		E7E0FD9424B2E0090016D81F /* FlickrResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrResponse.swift; sourceTree = "<group>"; };
+		E7E8DAF524B44F7F007D2DD9 /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		E7F498442470D87300254040 /* FlickrClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +64,8 @@
 		E7C42C18245FBAEE00B462E1 /* VirtualTourist */ = {
 			isa = PBXGroup;
 			children = (
+				E7E0FD9324B2DFE40016D81F /* Models */,
+				E7F498432470D84400254040 /* Network */,
 				E7C42C2D245FBF9500B462E1 /* Controllers */,
 				E7C42C19245FBAEE00B462E1 /* AppDelegate.swift */,
 				E7C42C1B245FBAEE00B462E1 /* SceneDelegate.swift */,
@@ -65,6 +73,7 @@
 				E7C42C22245FBAF100B462E1 /* Assets.xcassets */,
 				E7C42C24245FBAF100B462E1 /* LaunchScreen.storyboard */,
 				E7C42C27245FBAF100B462E1 /* Info.plist */,
+				E7E8DAF524B44F7F007D2DD9 /* PhotoCollectionViewCell.swift */,
 			);
 			path = VirtualTourist;
 			sourceTree = "<group>";
@@ -76,6 +85,22 @@
 				E7C42C30245FD69700B462E1 /* PhotoAlbumViewController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		E7E0FD9324B2DFE40016D81F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E7E0FD9424B2E0090016D81F /* FlickrResponse.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E7F498432470D84400254040 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				E7F498442470D87300254040 /* FlickrClient.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,9 +175,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7C42C1A245FBAEE00B462E1 /* AppDelegate.swift in Sources */,
+				E7F498452470D87300254040 /* FlickrClient.swift in Sources */,
 				E7C42C1C245FBAEE00B462E1 /* SceneDelegate.swift in Sources */,
 				E7C42C2F245FBFF000B462E1 /* TravelLocationViewController.swift in Sources */,
+				E7E8DAF624B44F7F007D2DD9 /* PhotoCollectionViewCell.swift in Sources */,
 				E7C42C31245FD69700B462E1 /* PhotoAlbumViewController.swift in Sources */,
+				E7E0FD9524B2E0090016D81F /* FlickrResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
