@@ -69,7 +69,21 @@ class FlickrClient {
         return task
     }
     
-    class func searchPhotosByLocation(latitude: Double, longitude: Double, completion: @escaping ([Photo]?, Error?) -> Void) {
+    @discardableResult class func downloadImage(url: URL, completion: @escaping (Data?, Error?) -> Void) -> URLSessionTask {
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil else {
+                DispatchQueue.main.async { completion(nil, error) }
+                return
+            }
+            
+            DispatchQueue.main.async { completion(data, nil) }
+        }
+        
+        task.resume()
+        return task
+    }
+    
+    class func searchPhotosByLocation(latitude: Double, longitude: Double, completion: @escaping ([PhotoMeta]?, Error?) -> Void) {
         let url = Endpoints.search(latitude, longitude).url
         
         taskForGetRequest(url: url, responseType: FlickrResponse.self, completion: { response, error in

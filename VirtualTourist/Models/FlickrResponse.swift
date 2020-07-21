@@ -18,10 +18,10 @@ class FlickMeta: Codable {
     var pages: Int
     var perpage: Int
     var total: String
-    var photo: [Photo]
+    var photo: [PhotoMeta]
 }
 
-class Photo: Codable {
+class PhotoMeta: Codable {
     var id: String
     var owner: String
     var secret: String
@@ -31,4 +31,8 @@ class Photo: Codable {
     var ispublic: Int
     var isfriend: Int
     var isfamily: Int
+    
+    func toUrl() -> String {
+        return "https://farm\(farm).staticflickr.com/\(server)/\(id)_\(secret)"
+    }
 }
