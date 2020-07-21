@@ -28,7 +28,7 @@ class FlickrClient {
                 return "\(Constants.BASE_URL)?api_key=\(Constants.API_KEY)&method=\(Constants.API_METHOD)"
             case .photo(let farmId, let serverId, let photoId, let photoSecret):
                 return "https://farm\(farmId).staticflickr.com/\(serverId)/\(photoId)_\(photoSecret).jpg"
-            case .search(let longitude, let latitude):
+            case .search(let latitude, let longitude):
                 return "\(Endpoints.base.stringValue)&per_page=20&format=json&nojsoncallback=?&lat=\(latitude)&lon=\(longitude)&page=1"
             }
         }
@@ -83,11 +83,14 @@ class FlickrClient {
         return task
     }
     
-    class func searchPhotosByLocation(latitude: Double, longitude: Double, completion: @escaping ([PhotoMeta]?, Error?) -> Void) {
+    @discardableResult class func searchPhotosByLocation(latitude: Double, longitude: Double, completion: @escaping ([PhotoMeta]?, Error?) -> Void) -> URLSessionTask {
         let url = Endpoints.search(latitude, longitude).url
         
-        taskForGetRequest(url: url, responseType: FlickrResponse.self, completion: { response, error in
-            
+        print("url: \(url)")
+        
+        return taskForGetRequest(url: url, responseType: FlickrResponse.self, completion: { response, error in
+            print("response: \(response?.photos)")
+            print("error: \(error)")
             if let photos = response?.photos.photo {
                 completion(photos, nil)
             } else {
