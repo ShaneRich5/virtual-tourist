@@ -10,7 +10,7 @@ import Foundation
 import MapKit
 
 class Settings {
-    let defaults = UserDefaults.standard
+    private let defaults = UserDefaults.standard
     
     static let KEY_LATITUDE_DELTA = "latitude_delta"
     static let KEY_LONGITUDE_DELTA = "longitude_delta"
@@ -38,5 +38,12 @@ class Settings {
         let longitudeDelta = defaults.double(forKey: Settings.KEY_LONGITUDE_CENTRE)
         
         return MKCoordinateSpan(latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta)
+    }
+    
+    func setLatestMapRegion(centre: CLLocationCoordinate2D, span: MKCoordinateSpan) {
+        defaults.set(centre.latitude, forKey: Settings.KEY_LATITUDE_CENTRE)
+        defaults.set(centre.longitude, forKey: Settings.KEY_LONGITUDE_CENTRE)
+        defaults.set(span.latitudeDelta, forKey: Settings.KEY_LATITUDE_CENTRE)
+        defaults.set(span.longitudeDelta, forKey: Settings.KEY_LONGITUDE_CENTRE)
     }
 }

@@ -90,6 +90,9 @@ class TravelLocationViewController: UIViewController {
 }
 
 extension TravelLocationViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        settings.setLatestMapRegion(centre: mapView.region.center, span: mapView.region.span)
+    }
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         let photoAlbumController = self.storyboard?.instantiateViewController(withIdentifier: "PhotoAlbumViewController") as! PhotoAlbumViewController
                 
