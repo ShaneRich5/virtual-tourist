@@ -66,11 +66,15 @@ class TravelLocationViewController: UIViewController {
             annotation.coordinate = coordinate
             mapView.addAnnotation(annotation)
             
-            let location = Location(context: dataController.viewContext)
-            location.latitude = coordinate.latitude
-            location.longitude = coordinate.longitude
-            location.creationDate = Date()
-            try? dataController.viewContext.save()
+            do {
+                let location = Location(context: dataController.viewContext)
+                location.latitude = coordinate.latitude
+                location.longitude = coordinate.longitude
+                location.creationDate = Date()
+                try dataController.viewContext.save()
+            } catch {
+                print("Failed to save location: \(error.localizedDescription)")
+            }
         }
     }
 }
