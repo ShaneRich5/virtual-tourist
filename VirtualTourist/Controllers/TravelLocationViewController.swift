@@ -36,13 +36,15 @@ class TravelLocationViewController: UIViewController {
     }
     
     func loadSavedAnnotations() {
-        let fetchRequest: NSFetchRequest<Location> = Location.fetchRequest()
-        if let result = try? dataController.viewContext.fetch(fetchRequest) {
-            locations = result
+        do {
+            let fetchRequest: NSFetchRequest<Location> = Location.fetchRequest()
+            let locations = try dataController.viewContext.fetch(fetchRequest)
+            let annotations = locations.map { location in location.toAnnotation() }
+                
+            mapView.addAnnotations(annotations)
+        } catch {
+            print("Failed to load locations: \(error.localizedDescription)")
         }
-        
-        let annotations = locations.map { location in location.toAnnotation() }
-        mapView.addAnnotations(annotations)
     }
     
     override func viewWillAppear(_ animated: Bool) {
