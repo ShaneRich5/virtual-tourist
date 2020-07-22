@@ -18,6 +18,7 @@ class TravelLocationViewController: UIViewController {
     
     var locations: [Location] = []
     var dataController: DataController!
+    let settings = Settings()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +30,15 @@ class TravelLocationViewController: UIViewController {
     }
     
     func configureMap() {
+        if (settings.hasLaunchedBefore()) {
+            let centre = settings.getCentreCoordinate()
+            let span = settings.getSpanCoordinate()
+            let region = MKCoordinateRegion(center: centre, span: span)
+            mapView.setRegion(region, animated: true)
+        } else {
+            settings.setHasLaunchedBefore(value: true)
+        }
+        
         let tapGesture = UILongPressGestureRecognizer(target: self, action: #selector(mapLongPressed))
         
         mapView.delegate = self
