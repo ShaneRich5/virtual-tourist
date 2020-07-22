@@ -16,6 +16,7 @@ class TravelLocationViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     
     var locations: [Location] = []
+    var dataController: DataController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
