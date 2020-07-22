@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E77367B124C7F3CE008C66F4 /* Location+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77367B024C7F3CE008C66F4 /* Location+Extras.swift */; };
 		E78CF00124C7D58200FB9A19 /* VirtualTourist.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E78CEFFF24C7D58200FB9A19 /* VirtualTourist.xcdatamodeld */; };
 		E78CF00324C7E8D000FB9A19 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78CF00224C7E8D000FB9A19 /* DataController.swift */; };
 		E7C42C1A245FBAEE00B462E1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C42C19245FBAEE00B462E1 /* AppDelegate.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E77367B024C7F3CE008C66F4 /* Location+Extras.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+Extras.swift"; sourceTree = "<group>"; };
 		E78CF00024C7D58200FB9A19 /* Virtual Tourist.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Virtual Tourist.xcdatamodel"; sourceTree = "<group>"; };
 		E78CF00224C7E8D000FB9A19 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		E7C42C16245FBAEE00B462E1 /* VirtualTourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualTourist.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +99,7 @@
 				E7E0FD9424B2E0090016D81F /* FlickrResponse.swift */,
 				E78CEFFF24C7D58200FB9A19 /* VirtualTourist.xcdatamodeld */,
 				E78CF00224C7E8D000FB9A19 /* DataController.swift */,
+				E77367B024C7F3CE008C66F4 /* Location+Extras.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -185,6 +188,7 @@
 				E7C42C1C245FBAEE00B462E1 /* SceneDelegate.swift in Sources */,
 				E7C42C2F245FBFF000B462E1 /* TravelLocationViewController.swift in Sources */,
 				E78CF00324C7E8D000FB9A19 /* DataController.swift in Sources */,
+				E77367B124C7F3CE008C66F4 /* Location+Extras.swift in Sources */,
 				E7E8DAF624B44F7F007D2DD9 /* PhotoCollectionViewCell.swift in Sources */,
 				E78CF00124C7D58200FB9A19 /* VirtualTourist.xcdatamodeld in Sources */,
 				E7C42C31245FD69700B462E1 /* PhotoAlbumViewController.swift in Sources */,

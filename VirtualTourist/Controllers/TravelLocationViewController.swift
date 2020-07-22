@@ -15,10 +15,11 @@ class TravelLocationViewController: UIViewController {
     
     @IBOutlet weak var mapView: MKMapView!
     
+    var locations: [Location] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureMap()
-    
         
         navigationItem.backBarButtonItem = UIBarButtonItem(
             title: "OK", style: .plain, target: nil, action: nil)
@@ -43,11 +44,14 @@ class TravelLocationViewController: UIViewController {
     @objc func mapLongPressed(sender: UIGestureRecognizer) {
         if sender.state == .began {
             let locationInView = sender.location(in: mapView)
-            let locationOnMap = mapView.convert(locationInView, toCoordinateFrom: mapView)
+            let coordinate = mapView.convert(locationInView, toCoordinateFrom: mapView)
             
             let annotation = MKPointAnnotation()
-            annotation.coordinate = locationOnMap
+            annotation.coordinate = coordinate
             self.mapView.addAnnotation(annotation)
+            
+            let location = Location.fromCoordinate(coordinate: coordinate)
+            locations.append(location)
         }
     }
 }
