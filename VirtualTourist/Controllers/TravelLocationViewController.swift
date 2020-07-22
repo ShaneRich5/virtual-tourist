@@ -18,6 +18,7 @@ class TravelLocationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureMap()
+    
         
         navigationItem.backBarButtonItem = UIBarButtonItem(
             title: "OK", style: .plain, target: nil, action: nil)

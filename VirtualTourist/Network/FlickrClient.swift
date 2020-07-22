@@ -86,11 +86,7 @@ class FlickrClient {
     @discardableResult class func searchPhotosByLocation(latitude: Double, longitude: Double, completion: @escaping ([PhotoMeta]?, Error?) -> Void) -> URLSessionTask {
         let url = Endpoints.search(latitude, longitude).url
         
-        print("url: \(url)")
-        
         return taskForGetRequest(url: url, responseType: FlickrResponse.self, completion: { response, error in
-            print("response: \(response?.photos)")
-            print("error: \(error)")
             if let photos = response?.photos.photo {
                 completion(photos, nil)
             } else {
