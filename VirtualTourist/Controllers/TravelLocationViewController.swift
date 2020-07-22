@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class TravelLocationViewController: UIViewController {
     static let photoAlbumSegue = "photoAlbum"
@@ -15,12 +16,35 @@ class TravelLocationViewController: UIViewController {
     
     @IBOutlet weak var mapView: MKMapView!
     
+    var locations: [Location] = []
+    var dataController: DataController!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureMap()
+        loadSavedAnnotations()
         
         navigationItem.backBarButtonItem = UIBarButtonItem(
             title: "OK", style: .plain, target: nil, action: nil)
+    }
+    
+    func configureMap() {
+        let tapGesture = UILongPressGestureRecognizer(target: self, action: #selector(mapLongPressed))
+        
+        mapView.delegate = self
+        mapView.addGestureRecognizer(tapGesture)
+    }
+    
+    func loadSavedAnnotations() {
+        do {
+            let fetchRequest: NSFetchRequest<Location> = Location.fetchRequest()
+            let locations = try dataController.viewContext.fetch(fetchRequest)
+            let annotations = locations.map { location in location.toAnnotation() }
+                
+            mapView.addAnnotations(annotations)
+        } catch {
+            print("Failed to load locations: \(error.localizedDescription)")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -33,20 +57,24 @@ class TravelLocationViewController: UIViewController {
         navigationController!.setNavigationBarHidden(false, animated: false)
     }
     
-    func configureMap() {
-        mapView.delegate = self
-        let tapGesture = UILongPressGestureRecognizer(target: self, action: #selector(mapLongPressed))
-        mapView.addGestureRecognizer(tapGesture)
-    }
-    
     @objc func mapLongPressed(sender: UIGestureRecognizer) {
         if sender.state == .began {
             let locationInView = sender.location(in: mapView)
-            let locationOnMap = mapView.convert(locationInView, toCoordinateFrom: mapView)
+            let coordinate = mapView.convert(locationInView, toCoordinateFrom: mapView)
             
             let annotation = MKPointAnnotation()
-            annotation.coordinate = locationOnMap
-            self.mapView.addAnnotation(annotation)
+            annotation.coordinate = coordinate
+            mapView.addAnnotation(annotation)
+            
+            do {
+                let location = Location(context: dataController.viewContext)
+                location.latitude = coordinate.latitude
+                location.longitude = coordinate.longitude
+                location.creationDate = Date()
+                try dataController.viewContext.save()
+            } catch {
+                print("Failed to save location: \(error.localizedDescription)")
+            }
         }
     }
 }

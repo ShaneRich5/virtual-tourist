@@ -33,6 +33,6 @@ class PhotoMeta: Codable {
     var isfamily: Int
     
     func toUrl() -> String {
-        return "https://farm\(farm).staticflickr.com/\(server)/\(id)_\(secret)"
+        return "https://farm\(farm).staticflickr.com/\(server)/\(id)_\(secret).jpg"
     }
 }
