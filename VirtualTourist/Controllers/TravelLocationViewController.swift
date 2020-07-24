@@ -69,23 +69,25 @@ class TravelLocationViewController: UIViewController {
     }
     
     @objc func mapLongPressed(sender: UIGestureRecognizer) {
-        if sender.state == .began {
-            let locationInView = sender.location(in: mapView)
-            let coordinate = mapView.convert(locationInView, toCoordinateFrom: mapView)
-            
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = coordinate
-            mapView.addAnnotation(annotation)
-            
-            do {
-                let location = Location(context: dataController.viewContext)
-                location.latitude = coordinate.latitude
-                location.longitude = coordinate.longitude
-                location.creationDate = Date()
-                try dataController.viewContext.save()
-            } catch {
-                print("Failed to save location: \(error.localizedDescription)")
-            }
+        guard sender.state == .began else {
+            return
+        }
+        
+        let locationInView = sender.location(in: mapView)
+        let coordinate = mapView.convert(locationInView, toCoordinateFrom: mapView)
+        
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        mapView.addAnnotation(annotation)
+        
+        do {
+            let location = Location(context: dataController.viewContext)
+            location.latitude = coordinate.latitude
+            location.longitude = coordinate.longitude
+            location.creationDate = Date()
+            try dataController.viewContext.save()
+        } catch {
+            print("Failed to save location: \(error.localizedDescription)")
         }
     }
 }
