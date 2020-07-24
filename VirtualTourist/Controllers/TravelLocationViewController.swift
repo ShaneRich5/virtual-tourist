@@ -30,13 +30,14 @@ class TravelLocationViewController: UIViewController {
     }
     
     func configureMap() {
-        if (settings.hasLaunchedBefore()) {
+        if settings.hasLaunchedBefore() {
             let centre = settings.getCentreCoordinate()
             let span = settings.getSpanCoordinate()
             let region = MKCoordinateRegion(center: centre, span: span)
             mapView.setRegion(region, animated: true)
         } else {
             settings.setHasLaunchedBefore(value: true)
+            settings.setLatestMapRegion(centre: mapView.region.center, span: mapView.region.span)
         }
         
         let tapGesture = UILongPressGestureRecognizer(target: self, action: #selector(mapLongPressed))
@@ -93,6 +94,7 @@ extension TravelLocationViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         settings.setLatestMapRegion(centre: mapView.region.center, span: mapView.region.span)
     }
+    
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         let photoAlbumController = self.storyboard?.instantiateViewController(withIdentifier: "PhotoAlbumViewController") as! PhotoAlbumViewController
                 

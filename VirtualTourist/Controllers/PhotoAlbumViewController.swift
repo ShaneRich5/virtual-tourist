@@ -38,7 +38,7 @@ class PhotoAlbumViewController: UIViewController {
     
     func handleFlickPhotoListResponse(photoDetails: [PhotoMeta]?, error: Error?) {
         guard let photoDetails = photoDetails, error == nil else {
-            print("Failed to load photos! \(error)")
+            print("Failed to load photos! \(error?.localizedDescription)")
             return
         }
     

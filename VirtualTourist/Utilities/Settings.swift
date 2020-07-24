@@ -34,8 +34,8 @@ class Settings {
     }
     
     func getSpanCoordinate() -> MKCoordinateSpan {
-        let latitudeDelta = defaults.double(forKey: Settings.KEY_LATITUDE_CENTRE)
-        let longitudeDelta = defaults.double(forKey: Settings.KEY_LONGITUDE_CENTRE)
+        let latitudeDelta = defaults.double(forKey: Settings.KEY_LATITUDE_DELTA)
+        let longitudeDelta = defaults.double(forKey: Settings.KEY_LONGITUDE_DELTA)
         
         return MKCoordinateSpan(latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta)
     }
@@ -43,7 +43,7 @@ class Settings {
     func setLatestMapRegion(centre: CLLocationCoordinate2D, span: MKCoordinateSpan) {
         defaults.set(centre.latitude, forKey: Settings.KEY_LATITUDE_CENTRE)
         defaults.set(centre.longitude, forKey: Settings.KEY_LONGITUDE_CENTRE)
-        defaults.set(span.latitudeDelta, forKey: Settings.KEY_LATITUDE_CENTRE)
-        defaults.set(span.longitudeDelta, forKey: Settings.KEY_LONGITUDE_CENTRE)
+        defaults.set(span.latitudeDelta, forKey: Settings.KEY_LATITUDE_DELTA)
+        defaults.set(span.longitudeDelta, forKey: Settings.KEY_LONGITUDE_DELTA)
     }
 }
