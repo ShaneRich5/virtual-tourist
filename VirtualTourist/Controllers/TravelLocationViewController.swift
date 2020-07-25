@@ -17,8 +17,8 @@ class TravelLocationViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     
     let settings = Settings()
-    var locations: [Location] = []
     var dataController: DataController!
+    var fetchedResultsController: NSFetchedResultsController<Location>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,24 +61,40 @@ class TravelLocationViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController!.setNavigationBarHidden(true, animated: false)
+        setupFetchedResultsController()
     }
+    
+    fileprivate func setupFetchedResultsController() {
+        let fetchRequest: NSFetchRequest<Location> = Location.fetchRequest()
+        
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        
+        fetchedResultsController.delegate = self
+        
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            fatalError("Failed to fetch photos for \(error.localizedDescription)")
+        }
+    }
+    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController!.setNavigationBarHidden(false, animated: false)
+        fetchedResultsController = nil
     }
     
     @objc func mapLongPressed(sender: UIGestureRecognizer) {
         guard sender.state == .began else {
+            // only interested in long presses
             return
         }
         
         let locationInView = sender.location(in: mapView)
         let coordinate = mapView.convert(locationInView, toCoordinateFrom: mapView)
-        
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = coordinate
-        mapView.addAnnotation(annotation)
         
         do {
             let location = Location(context: dataController.viewContext)
@@ -88,6 +104,19 @@ class TravelLocationViewController: UIViewController {
             try dataController.viewContext.save()
         } catch {
             print("Failed to save location: \(error.localizedDescription)")
+        }
+    }
+}
+
+extension TravelLocationViewController: NSFetchedResultsControllerDelegate {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            let annotation = (anObject as! Location).toAnnotation()
+            mapView.addAnnotation(annotation)
+            break
+        default:
+            break
         }
     }
 }
