@@ -129,6 +129,8 @@ extension TravelLocationViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         let photoAlbumController = self.storyboard?.instantiateViewController(withIdentifier: "PhotoAlbumViewController") as! PhotoAlbumViewController
         
+        mapView.deselectAnnotation(view.annotation, animated: false)
+        
         guard let coordinate = view.annotation?.coordinate else {
             print("Failed to access coordinate...")
             return
