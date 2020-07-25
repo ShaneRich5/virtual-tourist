@@ -16,9 +16,9 @@ class TravelLocationViewController: UIViewController {
     
     @IBOutlet weak var mapView: MKMapView!
     
+    let settings = Settings()
     var locations: [Location] = []
     var dataController: DataController!
-    let settings = Settings()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,8 +99,25 @@ extension TravelLocationViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         let photoAlbumController = self.storyboard?.instantiateViewController(withIdentifier: "PhotoAlbumViewController") as! PhotoAlbumViewController
-                
-        photoAlbumController.annotation = view.annotation
-        navigationController!.pushViewController(photoAlbumController, animated: true)
+        
+        guard let coordinate = view.annotation?.coordinate else {
+            print("Failed to access coordinate...")
+            return
+        }
+        
+        let fetchRequest: NSFetchRequest<Location> = Location.fetchRequest()
+        let predicate = NSPredicate(format: "latitude == %d and longitude == %d", argumentArray: [coordinate.latitude, coordinate.longitude])
+        fetchRequest.predicate = predicate
+        
+        do {
+            let location = try dataController.viewContext.fetch(fetchRequest).first
+            
+            photoAlbumController.location = location
+            photoAlbumController.dataController = dataController
+            
+            navigationController!.pushViewController(photoAlbumController, animated: true)
+        } catch {
+            print("Failed to configure the photo album view controller")
+        }
     }
 }

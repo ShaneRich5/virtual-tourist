@@ -10,12 +10,13 @@ import UIKit
 import MapKit
 
 class PhotoAlbumViewController: UIViewController {
-    var annotation: MKAnnotation!
-    
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var newCollectionButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    var location: Location!
+    var dataController: DataController!
     
     var urls = [String]()
     
@@ -24,16 +25,20 @@ class PhotoAlbumViewController: UIViewController {
         self.collectionView.dataSource = self
     }
     
+    override func viewDidLoad() {
+        let coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
+        let annotation = MKPointAnnotation()
+        
+        annotation.coordinate = coordinate
+        mapView.addAnnotation(annotation)
+        mapView.setCenter(coordinate, animated: false)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         showLoadingState(true)
         
-        let longitude = self.annotation.coordinate.longitude
-        let latitude = self.annotation.coordinate.latitude
-        
-        FlickrClient.searchPhotosByLocation(latitude: latitude, longitude: longitude, completion: handleFlickPhotoListResponse(photoDetails:error:))
-        
-        print(self.annotation.coordinate)
+        FlickrClient.searchPhotosByLocation(latitude: location.latitude, longitude: location.longitude, completion: handleFlickPhotoListResponse(photoDetails:error:))
     }
     
     func handleFlickPhotoListResponse(photoDetails: [PhotoMeta]?, error: Error?) {
@@ -80,7 +85,7 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
         FlickrClient.downloadImage(url: url, completion: { data, error in
             print(urlString)
             guard let data = data, error == nil else {
-                print("downloadImage: error fetching image! \(error)")
+                print("DownloadImage: error fetching image! \(error?.localizedDescription)")
                 return
             }
             
