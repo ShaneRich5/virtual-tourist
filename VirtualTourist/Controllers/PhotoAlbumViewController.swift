@@ -107,11 +107,17 @@ extension PhotoAlbumViewController: NSFetchedResultsControllerDelegate {
 }
 
 extension PhotoAlbumViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return fetchResultsController.sections?.count ?? 1
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return location.photos?.count ?? 0
+        return fetchResultsController.sections?[section].numberOfObjects ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let photo = fetchResultsController.object(at: indexPath)
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.reuseIdentifier, for: indexPath) as! PhotoCollectionViewCell
         let index = (indexPath as NSIndexPath).row
         

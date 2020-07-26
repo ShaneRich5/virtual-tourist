@@ -69,7 +69,7 @@ class TravelLocationViewController: UIViewController {
         
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: "locations")
         
         fetchedResultsController.delegate = self
         
@@ -130,7 +130,7 @@ extension TravelLocationViewController: MKMapViewDelegate {
         let photoAlbumController = self.storyboard?.instantiateViewController(withIdentifier: "PhotoAlbumViewController") as! PhotoAlbumViewController
         
         mapView.deselectAnnotation(view.annotation, animated: false)
-        
+
         guard let coordinate = view.annotation?.coordinate else {
             print("Failed to access coordinate...")
             return
