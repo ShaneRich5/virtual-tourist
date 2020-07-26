@@ -119,6 +119,7 @@
                     <connections>
                         <outlet property="activityIndicator" destination="T59-lM-A8a" id="IXg-AZ-xop"/>
                         <outlet property="collectionView" destination="7wg-uy-G5y" id="Pn0-pa-Wmy"/>
+                        <outlet property="flowLayout" destination="Wtd-X6-83t" id="oJu-0W-8E2"/>
                         <outlet property="mapView" destination="Xad-1I-X3B" id="zlL-jB-ZiL"/>
                         <outlet property="newCollectionButton" destination="EVh-R2-8HM" id="77K-Dt-cey"/>
                     </connections>

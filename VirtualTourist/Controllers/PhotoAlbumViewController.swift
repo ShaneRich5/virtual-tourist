@@ -15,6 +15,7 @@ class PhotoAlbumViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var newCollectionButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
     var location: Location!
     var dataController: DataController!
@@ -31,13 +32,28 @@ class PhotoAlbumViewController: UIViewController {
         mapView.setCenter(coordinate, animated: false)
         
         collectionView.dataSource = self
+        collectionView.delegate = self
+    }
+    
+    func fetchPhotos() {
+        showLoadingState(to: true)
         
-        
-        showLoadingState(true)
-        
-        
-        
-        FlickrClient.searchPhotosByLocation(latitude: location.latitude, longitude: location.longitude, completion: handleFlickPhotoListResponse(photoDetails:error:))
+        FlickrClient.searchPhotosByLocation(latitude: location.latitude, longitude: location.longitude, completion: { photoMetas, error in
+            guard let photoMetas = photoMetas, error == nil else {
+                print("Failed to load photos! \(error?.localizedDescription ?? "unknown error")")
+                return
+            }
+            
+            for photoMeta in photoMetas {
+                let photo = Photo(context: self.dataController.viewContext)
+                photo.creationDate = Date()
+                photo.url = photoMeta.toUrl()
+                photo.location = self.location
+                try? self.dataController.viewContext.save()
+            }
+            
+            self.showLoadingState(to: false)
+        })
     }
     
     fileprivate func setupFetchedResultsController() {
@@ -60,6 +76,18 @@ class PhotoAlbumViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupFetchedResultsController()
+        
+        let space: CGFloat = 3.0
+        let width = (view.frame.size.width - (2 * space)) / 3.0
+        let height = (view.frame.size.height - (2 * space)) / 3.0
+        
+        flowLayout.minimumInteritemSpacing = space
+        flowLayout.minimumLineSpacing = space
+        flowLayout.itemSize = CGSize(width: width, height: height)
+        
+        if (fetchResultsController.fetchedObjects?.count == 0) {
+            fetchPhotos()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -67,20 +95,7 @@ class PhotoAlbumViewController: UIViewController {
         fetchResultsController = nil
     }
     
-    func handleFlickPhotoListResponse(photoDetails: [PhotoMeta]?, error: Error?) {
-        guard let photoDetails = photoDetails, error == nil else {
-            print("Failed to load photos! \(error?.localizedDescription ?? "unknown error")")
-            return
-        }
-        
-        print("photoDetails: \(photoDetails)")
-    
-        showLoadingState(false)
-        urls = photoDetails.map { $0.toUrl() }
-        collectionView.reloadData()
-    }
-    
-    func showLoadingState(_ isLoading: Bool) {
+    func showLoadingState(to isLoading: Bool) {
         if isLoading {
             activityIndicator.startAnimating()
         } else {
@@ -88,6 +103,14 @@ class PhotoAlbumViewController: UIViewController {
         }
         
         newCollectionButton.isEnabled = !isLoading
+    }
+}
+
+extension PhotoAlbumViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let photo = fetchResultsController.object(at: indexPath)
+        dataController.viewContext.delete(photo)
+        try? dataController.viewContext.save()
     }
 }
 
@@ -100,6 +123,10 @@ extension PhotoAlbumViewController: NSFetchedResultsControllerDelegate {
             break
         case .delete:
             collectionView.deleteItems(at: [indexPath!])
+            break
+        case .update:
+            collectionView.reloadItems(at: [indexPath!])
+            break
         default:
             break
         }
@@ -107,39 +134,36 @@ extension PhotoAlbumViewController: NSFetchedResultsControllerDelegate {
 }
 
 extension PhotoAlbumViewController: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return fetchResultsController.sections?.count ?? 1
-    }
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return fetchResultsController.sections?[section].numberOfObjects ?? 0
+        return fetchResultsController.fetchedObjects?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.reuseIdentifier, for: indexPath) as! PhotoCollectionViewCell
         let photo = fetchResultsController.object(at: indexPath)
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.reuseIdentifier, for: indexPath) as! PhotoCollectionViewCell
-        let index = (indexPath as NSIndexPath).row
-        
-        
-        let urlString = self.urls[index]
-        
-        guard let url = URL(string: urlString) else {
-            print("collectionView: image broken")
-            return cell
+        if let data = photo.data {
+            cell.imageView.image = UIImage(data: data)
+        } else {
+            cell.imageView.image = UIImage(named: "VirtualTourist")
+            downloadImageForPhoto(photo: photo)
         }
+        cell.imageView.contentMode = .scaleAspectFit
         
-        FlickrClient.downloadImage(url: url, completion: { data, error in
-            print(urlString)
+        return cell
+    }
+    
+    func downloadImageForPhoto(photo: Photo) {
+        FlickrClient.downloadImage(url: photo.toURL(), completion: { data, error in
             guard let data = data, error == nil else {
-                print("DownloadImage: error fetching image! \(error?.localizedDescription ?? "unknown error")")
+                print("DownloadImage for \(photo.url): error fetching image! \(error?.localizedDescription ?? "unknown error")")
                 return
             }
             
-            let image = UIImage(data: data)
-            cell.imageView.image = image
+            print("downloaded \(photo.url)")
+            
+            photo.data = data
+            try? self.dataController.viewContext.save()
         })
-        
-        return cell
     }
 }
