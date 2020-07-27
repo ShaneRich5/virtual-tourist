@@ -119,6 +119,19 @@ class PhotoAlbumViewController: UIViewController {
         
         newCollectionButton.isEnabled = !isLoading
     }
+    
+    @IBAction func newCollectionPressed(_ sender: Any) {
+        guard let photos = fetchResultsController.fetchedObjects  else {
+            return
+        }
+        
+        for photo in photos {
+            dataController.viewContext.delete(photo)
+            try? dataController.viewContext.save()
+        }
+        
+        fetchPhotos()
+    }
 }
 
 extension PhotoAlbumViewController: UICollectionViewDelegate {

@@ -89,10 +89,16 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="delegate" destination="Kxx-lK-3co" id="gU4-V3-ca5"/>
+                                </connections>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EVh-R2-8HM" userLabel="New Collection">
                                 <rect key="frame" x="0.0" y="832" width="414" height="30"/>
                                 <state key="normal" title="New Collection"/>
+                                <connections>
+                                    <action selector="newCollectionPressed:" destination="Kxx-lK-3co" eventType="touchUpInside" id="JP4-SR-fiI"/>
+                                </connections>
                             </button>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="T59-lM-A8a">
                                 <rect key="frame" x="197" y="528" width="20" height="20"/>
