@@ -21,7 +21,19 @@ class PhotoAlbumViewController: UIViewController {
     var dataController: DataController!
     var fetchResultsController: NSFetchedResultsController<Photo>!
     
-    var urlsBeingDown = [String]()
+    var isLoadingImages: Bool {
+        get {
+            if let photos = fetchResultsController.fetchedObjects {
+                for photo in photos {
+                    if (photo.isLoading) {
+                        return true
+                    }
+                }
+            }
+            
+            return false
+        }
+    }
     
     override func viewDidLoad() {
         let coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
@@ -49,13 +61,13 @@ class PhotoAlbumViewController: UIViewController {
                 photo.creationDate = Date()
                 photo.url = photoMeta.toUrl()
                 photo.location = self.location
+                photo.isLoading = true
                 try? self.dataController.viewContext.save()
                 
                 self.downloadImageForPhoto(photo: photo)
             }
             
             self.collectionView.reloadData()
-            self.showLoadingState(to: false)
         })
     }
     
@@ -159,6 +171,12 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
     
     func downloadImageForPhoto(photo: Photo) {
         FlickrClient.downloadImage(url: photo.toURL(), completion: { data, error in
+            photo.isLoading = false
+            
+            if (!self.isLoadingImages) {
+                self.showLoadingState(to: false)
+            }
+            
             guard let data = data, error == nil else {
                 print("DownloadImage for \(photo.url): error fetching image! \(error?.localizedDescription ?? "unknown error")")
                 return

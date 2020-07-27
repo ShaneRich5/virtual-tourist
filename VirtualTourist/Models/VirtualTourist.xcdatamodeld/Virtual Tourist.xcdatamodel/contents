@@ -9,11 +9,12 @@
     <entity name="Photo" representedClassName="Photo" syncable="YES" codeGenerationType="class">
         <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="data" optional="YES" attributeType="Binary"/>
+        <attribute name="isLoading" optional="YES" transient="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="url" attributeType="String"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="photos" inverseEntity="Location"/>
     </entity>
     <elements>
         <element name="Location" positionX="-152.23046875" positionY="-736.66796875" width="124.19140625" height="103"/>
-        <element name="Photo" positionX="79.31640625" positionY="-737.10546875" width="128" height="103"/>
+        <element name="Photo" positionX="79.31640625" positionY="-737.10546875" width="128" height="118"/>
     </elements>
 </model>
