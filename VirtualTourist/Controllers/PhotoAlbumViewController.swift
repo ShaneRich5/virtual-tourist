@@ -21,7 +21,7 @@ class PhotoAlbumViewController: UIViewController {
     var dataController: DataController!
     var fetchResultsController: NSFetchedResultsController<Photo>!
     
-    var urls = [String]()
+    var urlsBeingDown = [String]()
     
     override func viewDidLoad() {
         let coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
@@ -50,8 +50,11 @@ class PhotoAlbumViewController: UIViewController {
                 photo.url = photoMeta.toUrl()
                 photo.location = self.location
                 try? self.dataController.viewContext.save()
+                
+                self.downloadImageForPhoto(photo: photo)
             }
             
+            self.collectionView.reloadData()
             self.showLoadingState(to: false)
         })
     }
@@ -108,7 +111,9 @@ class PhotoAlbumViewController: UIViewController {
 
 extension PhotoAlbumViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("about to delete")
         let photo = fetchResultsController.object(at: indexPath)
+        print("deleting \(photo)")
         dataController.viewContext.delete(photo)
         try? dataController.viewContext.save()
     }
@@ -146,7 +151,6 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
             cell.imageView.image = UIImage(data: data)
         } else {
             cell.imageView.image = UIImage(named: "VirtualTourist")
-            downloadImageForPhoto(photo: photo)
         }
         cell.imageView.contentMode = .scaleAspectFit
         

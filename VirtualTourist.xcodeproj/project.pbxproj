@@ -55,6 +55,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E7088E1D24CE2C5B00C3BF6C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E7C42C24245FBAF100B462E1 /* LaunchScreen.storyboard */,
+				E7C42C1F245FBAEE00B462E1 /* Main.storyboard */,
+				E7C42C22245FBAF100B462E1 /* Assets.xcassets */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		E77367B224C83E7C008C66F4 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -82,17 +92,14 @@
 		E7C42C18245FBAEE00B462E1 /* VirtualTourist */ = {
 			isa = PBXGroup;
 			children = (
+				E7088E1D24CE2C5B00C3BF6C /* Views */,
 				E77367B224C83E7C008C66F4 /* Utilities */,
 				E7E0FD9324B2DFE40016D81F /* Models */,
 				E7F498432470D84400254040 /* Network */,
 				E7C42C2D245FBF9500B462E1 /* Controllers */,
 				E7C42C19245FBAEE00B462E1 /* AppDelegate.swift */,
 				E7C42C1B245FBAEE00B462E1 /* SceneDelegate.swift */,
-				E7C42C1F245FBAEE00B462E1 /* Main.storyboard */,
-				E7C42C22245FBAF100B462E1 /* Assets.xcassets */,
-				E7C42C24245FBAF100B462E1 /* LaunchScreen.storyboard */,
 				E7C42C27245FBAF100B462E1 /* Info.plist */,
-				E7E8DAF524B44F7F007D2DD9 /* PhotoCollectionViewCell.swift */,
 			);
 			path = VirtualTourist;
 			sourceTree = "<group>";
@@ -109,6 +116,7 @@
 		E7E0FD9324B2DFE40016D81F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E7E8DAF524B44F7F007D2DD9 /* PhotoCollectionViewCell.swift */,
 				E7E0FD9424B2E0090016D81F /* FlickrResponse.swift */,
 				E78CEFFF24C7D58200FB9A19 /* VirtualTourist.xcdatamodeld */,
 				E78CF00224C7E8D000FB9A19 /* DataController.swift */,
