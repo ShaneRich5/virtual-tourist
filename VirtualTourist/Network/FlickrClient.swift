@@ -87,6 +87,7 @@ class FlickrClient {
         let url = Endpoints.search(latitude, longitude).url
         
         return taskForGetRequest(url: url, responseType: FlickrResponse.self, completion: { response, error in
+            
             if let photos = response?.photos.photo {
                 completion(photos, nil)
             } else {

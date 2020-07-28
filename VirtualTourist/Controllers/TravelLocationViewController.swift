@@ -16,9 +16,9 @@ class TravelLocationViewController: UIViewController {
     
     @IBOutlet weak var mapView: MKMapView!
     
-    var locations: [Location] = []
-    var dataController: DataController!
     let settings = Settings()
+    var dataController: DataController!
+    var fetchedResultsController: NSFetchedResultsController<Location>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,31 +61,62 @@ class TravelLocationViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController!.setNavigationBarHidden(true, animated: false)
+        setupFetchedResultsController()
     }
+    
+    fileprivate func setupFetchedResultsController() {
+        let fetchRequest: NSFetchRequest<Location> = Location.fetchRequest()
+        
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: "locations")
+        
+        fetchedResultsController.delegate = self
+        
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            fatalError("Failed to fetch photos for \(error.localizedDescription)")
+        }
+    }
+    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController!.setNavigationBarHidden(false, animated: false)
+        fetchedResultsController = nil
     }
     
     @objc func mapLongPressed(sender: UIGestureRecognizer) {
-        if sender.state == .began {
-            let locationInView = sender.location(in: mapView)
-            let coordinate = mapView.convert(locationInView, toCoordinateFrom: mapView)
-            
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = coordinate
+        guard sender.state == .began else {
+            // only interested in long presses
+            return
+        }
+        
+        let locationInView = sender.location(in: mapView)
+        let coordinate = mapView.convert(locationInView, toCoordinateFrom: mapView)
+        
+        do {
+            let location = Location(context: dataController.viewContext)
+            location.latitude = coordinate.latitude
+            location.longitude = coordinate.longitude
+            location.creationDate = Date()
+            try dataController.viewContext.save()
+        } catch {
+            print("Failed to save location: \(error.localizedDescription)")
+        }
+    }
+}
+
+extension TravelLocationViewController: NSFetchedResultsControllerDelegate {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            let annotation = (anObject as! Location).toAnnotation()
             mapView.addAnnotation(annotation)
-            
-            do {
-                let location = Location(context: dataController.viewContext)
-                location.latitude = coordinate.latitude
-                location.longitude = coordinate.longitude
-                location.creationDate = Date()
-                try dataController.viewContext.save()
-            } catch {
-                print("Failed to save location: \(error.localizedDescription)")
-            }
+            break
+        default:
+            break
         }
     }
 }
@@ -97,8 +128,27 @@ extension TravelLocationViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         let photoAlbumController = self.storyboard?.instantiateViewController(withIdentifier: "PhotoAlbumViewController") as! PhotoAlbumViewController
-                
-        photoAlbumController.annotation = view.annotation
-        navigationController!.pushViewController(photoAlbumController, animated: true)
+        
+        mapView.deselectAnnotation(view.annotation, animated: false)
+
+        guard let coordinate = view.annotation?.coordinate else {
+            print("Failed to access coordinate...")
+            return
+        }
+        
+        let fetchRequest: NSFetchRequest<Location> = Location.fetchRequest()
+        let predicate = NSPredicate(format: "latitude == %d and longitude == %d", argumentArray: [coordinate.latitude, coordinate.longitude])
+        fetchRequest.predicate = predicate
+        
+        do {
+            let location = try dataController.viewContext.fetch(fetchRequest).first
+            
+            photoAlbumController.location = location
+            photoAlbumController.dataController = dataController
+            
+            navigationController!.pushViewController(photoAlbumController, animated: true)
+        } catch {
+            print("Failed to configure the photo album view controller")
+        }
     }
 }
