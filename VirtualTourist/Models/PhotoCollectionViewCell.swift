@@ -12,8 +12,4 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     public static var reuseIdentifier = "PhotoCollectionViewCell"
     
     @IBOutlet weak var imageView: UIImageView!
-    
-    func configure (url: String) {
-        imageView.image = UIImage()
-    }
 }
