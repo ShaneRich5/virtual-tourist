@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class PhotoAlbumViewController: UIViewController {
+class PhotoAlbumViewController: UIViewController, UICollectionViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var newCollectionButton: UIButton!
@@ -23,7 +23,7 @@ class PhotoAlbumViewController: UIViewController {
     
     var isLoadingImages: Bool {
         get {
-            if let photos = fetchResultsController.fetchedObjects {
+            if let photos = fetchResultsController?.fetchedObjects {
                 for photo in photos {
                     if (photo.isLoading) {
                         return true
@@ -45,6 +45,12 @@ class PhotoAlbumViewController: UIViewController {
         
         collectionView.dataSource = self
         collectionView.delegate = self
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let photo = fetchResultsController.object(at: indexPath)
+        dataController.viewContext.delete(photo)
+        try? dataController.viewContext.save()
     }
     
     func fetchPhotos() {
@@ -102,6 +108,8 @@ class PhotoAlbumViewController: UIViewController {
         
         if (fetchResultsController.fetchedObjects?.count == 0) {
             fetchPhotos()
+        } else {
+            showLoadingState(to: false)
         }
     }
     
@@ -134,16 +142,6 @@ class PhotoAlbumViewController: UIViewController {
     }
 }
 
-extension PhotoAlbumViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("about to delete")
-        let photo = fetchResultsController.object(at: indexPath)
-        print("deleting \(photo)")
-        dataController.viewContext.delete(photo)
-        try? dataController.viewContext.save()
-    }
-}
-
 extension PhotoAlbumViewController: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         
@@ -165,7 +163,7 @@ extension PhotoAlbumViewController: NSFetchedResultsControllerDelegate {
 
 extension PhotoAlbumViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return fetchResultsController.fetchedObjects?.count ?? 0
+        return fetchResultsController?.fetchedObjects?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -191,11 +189,9 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
             }
             
             guard let data = data, error == nil else {
-                print("DownloadImage for \(photo.url): error fetching image! \(error?.localizedDescription ?? "unknown error")")
+                print("DownloadImage failed: error fetching image! \(error?.localizedDescription ?? "unknown error")")
                 return
             }
-            
-            print("downloaded \(photo.url)")
             
             photo.data = data
             try? self.dataController.viewContext.save()

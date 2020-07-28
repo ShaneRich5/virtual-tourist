@@ -46,7 +46,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Xad-1I-X3B">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" showsCompass="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xad-1I-X3B">
                                 <rect key="frame" x="0.0" y="44" width="414" height="200"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="200" id="lrp-Dy-xnc"/>
@@ -89,9 +89,6 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
-                                <connections>
-                                    <outlet property="delegate" destination="Kxx-lK-3co" id="gU4-V3-ca5"/>
-                                </connections>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EVh-R2-8HM" userLabel="New Collection">
                                 <rect key="frame" x="0.0" y="832" width="414" height="30"/>
